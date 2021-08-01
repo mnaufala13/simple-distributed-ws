@@ -1,0 +1,2 @@
+tcp:
+  8080: "default/go-ws-svc:8080"

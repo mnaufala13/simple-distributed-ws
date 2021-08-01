@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: go-ws
+  labels:
+    app: go-ws
+  annotations:
+    app: go-ws
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: go-ws
+  template:
+    metadata:
+      name: go-ws
+      labels:
+        app: go-ws
+    spec:
+      containers:
+        - name: go-ws
+          image: naufaloval/go_ws:v2.0.0
+          env:
+            - name: REDIS_ADDR
+              value: redis-master.default:6379
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-ws-svc
+spec:
+  type: NodePort
+  selector:
+    app: go-ws
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 32767
